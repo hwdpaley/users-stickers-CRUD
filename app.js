@@ -8,6 +8,7 @@ var cors = require('cors');
 
 var index = require('./routes/index');
 var user = require('./routes/user');
+var auth = require('./auth');
 
 var app = express();
 
@@ -24,18 +25,19 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
+app.use('/auth', auth);
 app.use('/', index);
 app.use('/user', user);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
